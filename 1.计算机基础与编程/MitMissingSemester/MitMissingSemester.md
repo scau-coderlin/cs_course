@@ -175,15 +175,6 @@ block       dmi             input          msr       power_supply      scsi_disk
 bluetooth   drm             intel_pmt      mtd       pps               scsi_host    video4linux
 bsg         drm_dp_aux_dev  intel_scu_ipc  net       ptp               sound        virtio-ports
 cpuid       extcon          iommu          nvme      pwm               spi_master   vtconsole
-
-
-
-```
-
-
-
-```
-                                       
 accel       devcoredump     firmware       leds      nvme-generic      rc           spi_slave     wakeup
 ata_device  devfreq         graphics       lirc      nvme-subsystem    regulator    thermal       watchdog
 ata_link    devfreq-event   hidraw         mei       pci_bus           remoteproc   tpm           wmi_bus
@@ -194,6 +185,142 @@ block       dmi             input          msr       power_supply      scsi_disk
 bluetooth   drm             intel_pmt      mtd       pps               scsi_host    video4linux
 bsg         drm_dp_aux_dev  intel_scu_ipc  net       ptp               sound        virtio-ports
 cpuid       extcon          iommu          nvme      pwm               spi_master   vtconsole
-
 ```
+
+
+
+# Shell工具与脚本
+
+## 定义变量
+
+```bash
+# 定义变量
+foo=bar # foo = bar 不起作用，shell中，空格很重要
+
+# 使用 "$value_name"访问变量
+echo $foo
+```
+
+
+
+## 字符串使用
+
+```bash
+# 双引号
+echo "hello"
+
+# 单引号
+echo 'world'
+
+# 双引号
+echo "Value is $foo" # 会将"$foo"展开为字符串，并替换为Shell中"foo"的值 => Value is bar
+
+# 单引号不会进行替换
+echo 'Value is $foo' # 如果使用单引号，则仅仅就是 "$foo" => Value is $foo
+```
+
+
+
+## 定义函数
+
+- 保留字：
+    - `$0`：表示脚本名称
+    - `$1 ~ $9` : 特殊变量，是bash的一种特性，类似于其他脚本语言的 `argv`。表示bash脚本接收到第二到第九个参数。
+- `source mcd.sh`：加载并执行脚本，执行后shell中已经定义了mcd函数。
+- `mcd test`：执行mcd函数
+
+```bash
+# mcd.sh
+# function
+mcd () {
+	mkdir -p "$1" # 
+	cd "$1"
+}
+```
+
+
+
+## 保留字
+
+- `$?`：获取上一个命令的错误代码
+- `$_`：获取上一个命令的最后一个参数
+
+- `!!`：当尝试创建某些东西时但没有足够的权限时，这个命令就很有用。会被替换成上一次执行的命令。
+
+```bash
+mkdir /mnt/new
+sudo !!
+```
+
+
+
+- 进程可以通过不同的方式和其他进程或命令进行通信
+
+```bash
+# 试图在mcd.sh中搜索"foobar"字符串
+grep foobar mcd.sh 
+
+echo $?
+```
+
+
+
+- `true`, `false`：
+
+```bash
+false || echo "Oops fail" # Oops fail
+true || echo "Will be not be printed"
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
